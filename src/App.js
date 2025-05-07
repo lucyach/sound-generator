@@ -11,8 +11,12 @@ function App() {
     const [detune, setDetune] = useState(0);
     const [frequency, setFrequency] = useState(440);
     const [duration, setDuration] = useState(500);
+    const [attack, setAttack] = useState(0);
+    const [release, setRelease] = useState(0);
 
-    const playSound = (frequency, duration) => {
+    const playSound = (sound) => {
+        const { frequency, duration, attack, release, waveform, volume, detune } = sound;
+
         if (!isFinite(frequency) || !isFinite(duration)) {
             console.error('Invalid frequency or duration:', { frequency, duration });
             return;
@@ -25,27 +29,41 @@ function App() {
         oscillator.type = waveform;
         oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
         oscillator.detune.setValueAtTime(detune, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+
+        const startTime = audioContext.currentTime;
+        const endTime = startTime + duration / 1000;
+
+        gainNode.gain.setValueAtTime(0, startTime); // Start at 0
+        gainNode.gain.linearRampToValueAtTime(volume, startTime + attack / 1000); // Ramp up during attack
+        gainNode.gain.setValueAtTime(volume, endTime - release / 1000); // Sustain
+        gainNode.gain.linearRampToValueAtTime(0, endTime); // Ramp down during release
 
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
 
-        oscillator.start();
-        setTimeout(() => {
-            oscillator.stop();
-        }, duration);
+        oscillator.start(startTime);
+        oscillator.stop(endTime);
     };
 
     const playSequence = () => {
         let currentTime = 0;
-        sequence.forEach(({ frequency, duration }) => {
-            setTimeout(() => playSound(frequency, duration), currentTime);
-            currentTime += duration;
+        sequence.forEach((sound) => {
+            setTimeout(() => playSound(sound), currentTime);
+            currentTime += sound.duration;
         });
     };
 
     const addNoteToSequence = () => {
-        setSequence([...sequence, { frequency, duration }]);
+        const newSound = {
+            frequency,
+            duration,
+            attack,
+            release,
+            waveform,
+            volume,
+            detune,
+        };
+        setSequence([...sequence, newSound]);
     };
 
     const updateNote = (index, field, value) => {
@@ -60,8 +78,7 @@ function App() {
 
     return (
         <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex flex-row p-6">
-        <script src="https://cdn.tailwindcss.com"></script>
-
+            <script src="https://cdn.tailwindcss.com"></script>
             <SoundGenerator
                 frequency={frequency}
                 setFrequency={setFrequency}
@@ -71,6 +88,12 @@ function App() {
                 setDuration={setDuration}
                 detune={detune}
                 setDetune={setDetune}
+                attack={attack}
+                setAttack={setAttack}
+                release={release}
+                setRelease={setRelease}
+                waveform={waveform}
+                setWaveform={setWaveform}
                 playSound={playSound}
                 addNoteToSequence={addNoteToSequence}
             />

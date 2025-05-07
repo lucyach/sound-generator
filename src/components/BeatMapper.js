@@ -4,25 +4,35 @@ function BeatMapper({ sequence, updateNote, playSequence, clearSequence }) {
     return (
         <div className="w-1/2 p-4 bg-gray-100 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Beat Sequencer</h2>
-            {sequence.map((step, index) => (
+            {sequence.map((sound, index) => (
                 <div key={index} className="flex items-center mb-4">
                     <span className="w-1/3 p-2 bg-gray-200 text-gray-700 border border-gray-300 rounded-lg mr-2">
-                        {`sound${index + 1}`}
+                        {`Sound ${index + 1}`}
                     </span>
                     <input
                         type="number"
-                        value={step.frequency}
+                        value={sound.frequency}
                         onChange={(e) => updateNote(index, 'frequency', parseFloat(e.target.value) || 0)}
                         className="w-1/3 p-2 bg-white text-gray-700 border border-gray-300 rounded-lg mr-2"
                         placeholder="Frequency (Hz)"
                     />
                     <input
                         type="number"
-                        value={step.duration}
+                        value={sound.duration}
                         onChange={(e) => updateNote(index, 'duration', parseInt(e.target.value, 10) || 0)}
                         className="w-1/3 p-2 bg-white text-gray-700 border border-gray-300 rounded-lg mr-2"
                         placeholder="Duration (ms)"
                     />
+                    <select
+                        value={sound.waveform}
+                        onChange={(e) => updateNote(index, 'waveform', e.target.value)}
+                        className="w-1/3 p-2 bg-white text-gray-700 border border-gray-300 rounded-lg mr-2"
+                    >
+                        <option value="sine">Sine</option>
+                        <option value="square">Square</option>
+                        <option value="sawtooth">Sawtooth</option>
+                        <option value="triangle">Triangle</option>
+                    </select>
                 </div>
             ))}
             <button
