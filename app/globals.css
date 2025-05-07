@@ -1,8 +1,0 @@
-@import "tailwindcss";
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-body {
-    @apply bg-gradient-to-r from-blue-500 to-purple-600;
-}
