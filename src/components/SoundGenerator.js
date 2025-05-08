@@ -19,7 +19,8 @@ function SoundGenerator({
     addNoteToSequence,
 }) {
     return (
-        <div className="w-1/2 p-4 bg-white rounded-lg shadow-lg">
+        <div className="w-1/2 p-4 rounded-lg shadow-lg font-mono"
+        style={{ backgroundColor: '#dcd3e0'}}>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Edit Note</h2>
 
             {/* Frequency */}
@@ -43,7 +44,7 @@ function SoundGenerator({
                     step="0.01"
                     value={volume || 0}
                     onChange={(e) => setVolume(e.target.value ? parseFloat(e.target.value) : 0)}
-                    className="w-full"
+                    className="w-full custom-slider"
                 />
             </div>
 

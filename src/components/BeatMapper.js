@@ -2,7 +2,8 @@ import React from 'react';
 
 function BeatMapper({ sequence, updateNote, playSequence, clearSequence }) {
     return (
-        <div className="w-1/2 p-4 bg-gray-100 rounded-lg shadow-lg">
+        <div className="w-1/2 p-4 rounded-lg shadow-lg font-mono"
+        style={{ backgroundColor: '#dcd3e0' }}>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Beat Sequencer</h2>
             {sequence.map((sound, index) => (
                 <div key={index} className="flex items-center mb-4">

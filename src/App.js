@@ -77,8 +77,9 @@ function App() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex flex-row p-6">
-            <script src="https://cdn.tailwindcss.com"></script>
+        <div className="min-h-screen flex flex-row p-6 gap-6 font-mono"
+        style={{ backgroundColor: '#372142' }} // Replace with your desired hex color
+        >
             <SoundGenerator
                 frequency={frequency}
                 setFrequency={setFrequency}
